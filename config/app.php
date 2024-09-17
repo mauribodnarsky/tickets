@@ -1,13 +1,13 @@
 <?php
 
 return [
- 'providers' => array(
-        'Vcode\Qrcode\QrcodeServiceProvider',
-    )
-,
-'aliases' => array(
-    'Qrcode' => 'Vcode\Qrcode\Facades\Qrcode',
-),
+ 'providers' => [
+    SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+],
+'aliases' => [
+
+'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+],
     /*
     |--------------------------------------------------------------------------
     | Application Name

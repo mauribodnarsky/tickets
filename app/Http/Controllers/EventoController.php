@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evento;
 use Illuminate\Http\Request;
-use Vcode\Qrcode\Qrcode;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 class EventoController extends Controller
 {
@@ -85,12 +85,10 @@ class EventoController extends Controller
     }
     public function generateQRCode()
 {
-    $qrcode = new Qrcode();
 $value = "estarweb.com.ar";
-$qrcode->storageImage($value,"/evento/entradas/", "logo".$value.".png", 0.7);
-$qrcode->render("250");
-die();
-$url=public_path()."/evento/entradas/"."logo1.png";
-    return view('qrCode', ['url' => $url]);
+QrCode::size(500)
+            ->format('png')
+            ->generate($value, public_path('images/qrcode.png'));
+    return view('qrCode');
 }
 }
