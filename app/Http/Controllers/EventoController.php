@@ -41,7 +41,8 @@ class EventoController extends Controller
     {
         $data=$request->all();
         $data['user_id']=Auth::user()->id;
-        Evento::created($data);
+        $event=Evento::create($data);
+        dd($event);
         $eventos=Evento::all();
         return view('auth.eventos',['eventos'=>$eventos]);
     }

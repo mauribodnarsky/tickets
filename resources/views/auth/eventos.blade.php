@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -9,8 +8,7 @@
  Evento</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('eventos.store')   
- }}">
+                    <form method="POST" action="{{ route('eventos.store')}}">
                         @csrf
 
                         <div class="form-group">
@@ -45,7 +43,6 @@
         </div>
     </div>
 </div>
-@endsection
 <div class="row">
     <div class="col-12">
         @if(isset($eventos))
@@ -55,5 +52,7 @@
                     {{$evento->nombre}}
                 </div>
             </div>
+            @endforeach
+        @endif
     </div>
 </div>
