@@ -14,17 +14,16 @@ class CreateTableEventos extends Migration
     public function up()
     {
         Schema::create('eventos', function (Blueprint $table) {
-            $table->engine('InnoDB');
-
+ 
             $table->id();
+            $table->unsignedBigInteger('user_id');
+
             $table->string('nombre');
             $table->string('descripcion')->nullable();
             $table->timeTz('fecha');
             $table->timestamp('hora');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->timestamps();
-        });
+      });
     }
 
     /**
