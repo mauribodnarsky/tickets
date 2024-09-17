@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/eventos', [EventoController::class, 'store'])->middleware(['auth'])->name('eventos.store');
+Route::get('/eventos', [EventoController::class, 'index'])->middleware(['auth'])->name('eventos.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

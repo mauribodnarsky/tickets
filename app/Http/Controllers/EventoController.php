@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 class EventoController extends Controller
@@ -15,7 +16,9 @@ class EventoController extends Controller
      */
     public function index()
     {
-        //
+        $eventos=Evento::all();
+        
+        return view('auth.eventos',['eventos'=>$eventos]);
     }
 
     /**
@@ -36,7 +39,11 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=$request->all();
+        $data['user_id']=Auth::user()->id;
+        Evento::created($data);
+        $eventos=Evento::all();
+        return view('auth.eventos',['eventos'=>$eventos]);
     }
 
     /**
