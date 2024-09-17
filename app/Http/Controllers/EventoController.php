@@ -85,12 +85,21 @@ class EventoController extends Controller
     }
     public function generateQRCode()
 {
-    $qrcode = new Qrcode();
+    $qrcode = new Qrcode(array(
+        'qrcode::google_config_default' => array(
+            'chs' => "250x250",
+            'cht' => "qr",
+            'chld'=> "H|1",         // H(QML)|1, H|2, H|3, H|4, H|10, H|40,
+            'choe'=> "UTF-8"        // UTF-8, Shift_JIS, ISO-8859-1
+        ),
+        'qrcode::template_simple' => './template',
+        'qrcode::storage_dir'     => '/tmp'
+    ));
 $value = "estarweb.com.ar";
 $qrcode->storageImage($value,"/evento/entradas/", "logo".$value.".png", 0.7);
 $qrcode->render("250");
 die();
-$url=public_path()."/evento/entradas/"."logo".$value.".png";
+$url=public_path()."/evento/entradas/"."logo1.png";
     return view('qrCode', ['url' => $url]);
 }
 }
