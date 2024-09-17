@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,5 +21,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::controller(EventoController::class)->group(function () {
+    Route::get('/generateqrcode/{id}', 'generateQRCode')->middleware(['auth'])->name('generateqrcode');
+});
 
 require __DIR__.'/auth.php';
