@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(EventoController::class)->group(function () {
-    Route::get('/generateqrcode/{id}', 'generateQRCode')->middleware(['auth'])->name('generateqrcode');
+    Route::get('/generateqrcode', 'generateQRCode')->middleware(['auth'])->name('generateqrcode');
 });
 
 require __DIR__.'/auth.php';
