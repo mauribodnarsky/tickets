@@ -85,11 +85,7 @@ class EventoController extends Controller
     }
     public function generateQRCode()
 {
-    $qrcode = new Qrcode(array(
-      
-        'qrcode::template_simple' => './template',
-        'qrcode::storage_dir'     => '/tmp'
-    ));
+    $qrcode = new Qrcode();
 $value = "estarweb.com.ar";
 $qrcode->storageImage($value,"/evento/entradas/", "logo".$value.".png", 0.7);
 $qrcode->render("250");
