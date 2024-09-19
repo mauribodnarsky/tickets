@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-top navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'TICKETS QR') }}
@@ -75,9 +75,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
-        <a class="nav-link" href="{{ route('generateqrcode') }}">generateQRCode</a>
-        </main>
+        
     </div>
 </body>
 </html>

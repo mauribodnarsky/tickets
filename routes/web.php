@@ -19,6 +19,8 @@ Route::get('/', function () {
 });
 Route::post('/eventos', [EventoController::class, 'store'])->middleware(['auth'])->name('eventos.store');
 Route::get('/eventos', [EventoController::class, 'index'])->middleware(['auth'])->name('eventos.index');
+Route::post('/borrar', [EventoController::class, 'delete'])->middleware(['auth'])->name('eventos.delete');
+Route::post('/creartickets', [EventoController::class, 'creartickets'])->middleware(['auth'])->name('eventos.creartickets');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
