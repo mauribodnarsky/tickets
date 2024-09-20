@@ -52,6 +52,7 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         array (
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
             'Tests\\' => 6,
+            'TarfinLabs\\ZbarPhp\\' => 19,
         ),
         'S' => 
         array (
@@ -128,6 +129,7 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
             'Laravel\\Sanctum\\' => 16,
             'Laravel\\Sail\\' => 13,
             'Laravel\\Breeze\\' => 15,
+            'LaravelDaily\\Invoices\\' => 22,
         ),
         'I' => 
         array (
@@ -207,6 +209,10 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'Tests\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
+        ),
+        'TarfinLabs\\ZbarPhp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tarfin-labs/zbar-php/src',
         ),
         'Symfony\\Polyfill\\Php81\\' => 
         array (
@@ -429,6 +435,10 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
+        'LaravelDaily\\Invoices\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -578,6 +588,7 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\Entrada' => __DIR__ . '/../..' . '/app/Http/Controllers/Entrada.php',
         'App\\Http\\Controllers\\EventoController' => __DIR__ . '/../..' . '/app/Http/Controllers/EventoController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
@@ -590,6 +601,7 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
+        'App\\Models\\Entrada' => __DIR__ . '/../..' . '/app/Models/Entrada.php',
         'App\\Models\\Evento' => __DIR__ . '/../..' . '/app/Models/Evento.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -2940,6 +2952,22 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
+        'LaravelDaily\\Invoices\\Classes\\Buyer' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Classes/Buyer.php',
+        'LaravelDaily\\Invoices\\Classes\\InvoiceItem' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Classes/InvoiceItem.php',
+        'LaravelDaily\\Invoices\\Classes\\Party' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Classes/Party.php',
+        'LaravelDaily\\Invoices\\Classes\\Seller' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Classes/Seller.php',
+        'LaravelDaily\\Invoices\\Console\\InstallCommand' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Console/InstallCommand.php',
+        'LaravelDaily\\Invoices\\Console\\UpdateCommand' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Console/UpdateCommand.php',
+        'LaravelDaily\\Invoices\\Contracts\\PartyContract' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Contracts/PartyContract.php',
+        'LaravelDaily\\Invoices\\Facades\\Invoice' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Facades/Invoice.php',
+        'LaravelDaily\\Invoices\\Invoice' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Invoice.php',
+        'LaravelDaily\\Invoices\\InvoiceServiceProvider' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/InvoiceServiceProvider.php',
+        'LaravelDaily\\Invoices\\Services\\PricingService' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Services/PricingService.php',
+        'LaravelDaily\\Invoices\\Traits\\CurrencyFormatter' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Traits/CurrencyFormatter.php',
+        'LaravelDaily\\Invoices\\Traits\\DateFormatter' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Traits/DateFormatter.php',
+        'LaravelDaily\\Invoices\\Traits\\InvoiceHelpers' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Traits/InvoiceHelpers.php',
+        'LaravelDaily\\Invoices\\Traits\\SavesFiles' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Traits/SavesFiles.php',
+        'LaravelDaily\\Invoices\\Traits\\SerialNumberFormatter' => __DIR__ . '/..' . '/laraveldaily/laravel-invoices/src/Traits/SerialNumberFormatter.php',
         'Laravel\\Breeze\\BreezeServiceProvider' => __DIR__ . '/..' . '/laravel/breeze/src/BreezeServiceProvider.php',
         'Laravel\\Breeze\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallCommand.php',
         'Laravel\\Breeze\\Console\\InstallsApiStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsApiStack.php',
@@ -5798,6 +5826,10 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'Symfony\\Polyfill\\Php81\\Php81' => __DIR__ . '/..' . '/symfony/polyfill-php81/Php81.php',
+        'TarfinLabs\\ZbarPhp\\Exceptions\\InvalidFormat' => __DIR__ . '/..' . '/tarfin-labs/zbar-php/src/Exceptions/InvalidFormat.php',
+        'TarfinLabs\\ZbarPhp\\Exceptions\\UnableToOpen' => __DIR__ . '/..' . '/tarfin-labs/zbar-php/src/Exceptions/UnableToOpen.php',
+        'TarfinLabs\\ZbarPhp\\Exceptions\\ZbarError' => __DIR__ . '/..' . '/tarfin-labs/zbar-php/src/Exceptions/ZbarError.php',
+        'TarfinLabs\\ZbarPhp\\Zbar' => __DIR__ . '/..' . '/tarfin-labs/zbar-php/src/Zbar.php',
         'Tests\\CreatesApplication' => __DIR__ . '/../..' . '/tests/CreatesApplication.php',
         'Tests\\Feature\\Auth\\AuthenticationTest' => __DIR__ . '/../..' . '/tests/Feature/Auth/AuthenticationTest.php',
         'Tests\\Feature\\Auth\\EmailVerificationTest' => __DIR__ . '/../..' . '/tests/Feature/Auth/EmailVerificationTest.php',

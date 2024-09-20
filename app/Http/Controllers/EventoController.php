@@ -23,6 +23,11 @@ class EventoController extends Controller
         
         return view('auth.eventos',['eventos'=>$eventos]);
     }
+    public function lector()
+    {
+        
+        return view('auth.lector');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -94,33 +99,26 @@ class EventoController extends Controller
         
         $contador=0;
         $html='';
+        Storage::makeDirectory(public_path('eventos/'));
+    
         $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
         Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/');
-        $r=Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/tickets/');
-$path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
-dd($path);
-Storage::move(path, public_path('eventos/'.$data['crearEntradaId']);
-$path=$path->move(public_path('eventos/'.$data['crearEntradaId']));
-$tickets=[];
+        Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/tickets/');
+        $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
+        $tickets=[];
 
 
         while($data['cantidad']>$contador){
-            QrCode::size(500)
-            ->format('png')
-            ->generate($value, storage_path('app/eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png'));
-            $dataEntrada['evento_id']=$data['crearEntradaId'];
+             $dataEntrada['evento_id']=$data['crearEntradaId'];
             $dataEntrada['type']='digital';
             $dataEntrada['type_ticket']='evento';
-            $dataEntrada['diseno']= 'eventos/'.$data['crearEntradaId'].'/'.$file->getClientOriginalName();
+            $dataEntrada['diseno']= $path;
             $entradacreada=Entrada::create($dataEntrada);
             $tickets[]=$entradacreada;
 $contador=$contador+1;
 
         }
-
-       $e= Pdf :: loadHTML ($html )-> setPaper ( ' a4 ' , ' horizontal ' )-> save ( storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf ' ));
-        $archivo=storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf');
-        return view('tickets',['archivo'=>$archivo,'tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'data'=>$dataEntrada]);
+        return view('tickets',['tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'data'=>$dataEntrada]);
     }
 
     /**
