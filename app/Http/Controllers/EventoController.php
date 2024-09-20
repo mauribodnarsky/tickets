@@ -9,6 +9,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Entrada;
+
 class EventoController extends Controller
 {
     /**
@@ -89,28 +90,36 @@ class EventoController extends Controller
     {
         $data=$request->all();
         $file = $request->file('photo');
-        $evento=DB::select('select from eventos where id = ?', [$data['crearEntradaId']]);
+        $evento=DB::select('select * from eventos where id = ?', [$data['crearEntradaId']]);
 
         $file = $request->photo;
         $contador=0;
         $html='';
-        $value = "tickets.estarweb.com.ar/".$data['nombre'].'/event/'.$data['nombre'];
+        $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
+        Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/');
+        $r=Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/tickets/');
+$path = $file->store('eventos/'.$data['crearEntradaId'].'/');
+        
+$tickets=[];
+
 
         while($data['cantidad']>$contador){
             QrCode::size(500)
             ->format('png')
-            ->generate($value, public_path('eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png'));
+            ->generate($value, storage_path('app/eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png'));
             $dataEntrada['evento_id']=$data['crearEntradaId'];
-            $dataEntrada['type']=$data['type'];
-            $dataEntrada['type_ticket']=$data['type_ticket'];
-            $dataEntrada['diseno']= public_path('eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png');
-            Entrada::create($dataEntrada);
-            $html+='<div class="row"><div class="col-12"><img src="'.$dataEntrada['diseno'].'" class="w-75" /></div></div>';
+            $dataEntrada['type']='digital';
+            $dataEntrada['type_ticket']='evento';
+            $dataEntrada['diseno']= storage_path('app/eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png');
+            $entradacreada=Entrada::create($dataEntrada);
+            $tickets[]=$entradacreada;
+$contador=$contador+1;
+
         }
 
-        Pdf :: loadHTML ($html )-> setPaper ( ' a4 ' , ' horizontal ' )-> setWarnings ( false )-> save ( ' myfile.pdf ' );
-
-    
+       $e= Pdf :: loadHTML ($html )-> setPaper ( ' a4 ' , ' horizontal ' )-> save ( storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf ' ));
+        $archivo=storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf');
+        return view('tickets',['archivo'=>$archivo,'tickets'=>$tickets,'dataentrada'=>$dataEntrada]);
     }
 
     /**
@@ -128,7 +137,7 @@ class EventoController extends Controller
 $value = "estarweb.com.ar";
 QrCode::size(500)
             ->format('png')
-            ->generate($value, public_path('images/qrcode.png'));
+            ->generate($value, storage_path('app/eventos/1/tickets/qrcode.png'));
     return view('qrCode');
 }
 }
