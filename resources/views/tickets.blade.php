@@ -8,7 +8,6 @@
     </div>
     <div class="col-8"><img src="{{$dataEntrada['diseno']}}" class="w-50 my-auto" /></div></div>;
 
-            {{$ticket['']}}
     </div>
 
         }

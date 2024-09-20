@@ -84,7 +84,7 @@
             @csrf 
             <h1  id="crearEntradaTitulo" class="fs-4"></h1>
 
-            <input type="hidden" id="crearEntradaId">
+            <input type="hidden" id="crearEntradaId" name="crearEntradaId">
             <label for="cantidad">Cantidad de entradas</label>
             <input type="number" name="cantidad"  >
             <label for="photo">Diseño de fondo</label>

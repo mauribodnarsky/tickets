@@ -91,15 +91,16 @@ class EventoController extends Controller
         $data=$request->all();
         $file = $request->file('photo');
         $evento=DB::select('select * from eventos where id = ?', [$data['crearEntradaId']]);
-
-        $file = $request->photo;
+        
         $contador=0;
         $html='';
         $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
         Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/');
         $r=Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/tickets/');
-$path = $file->store('eventos/'.$data['crearEntradaId'].'/');
-        
+$path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
+dd($path);
+Storage::move(path, public_path('eventos/'.$data['crearEntradaId']);
+$path=$path->move(public_path('eventos/'.$data['crearEntradaId']));
 $tickets=[];
 
 
@@ -110,7 +111,7 @@ $tickets=[];
             $dataEntrada['evento_id']=$data['crearEntradaId'];
             $dataEntrada['type']='digital';
             $dataEntrada['type_ticket']='evento';
-            $dataEntrada['diseno']= storage_path('app/eventos/'.$data['crearEntradaId'].'/tickets/'.$contador.'.png');
+            $dataEntrada['diseno']= 'eventos/'.$data['crearEntradaId'].'/'.$file->getClientOriginalName();
             $entradacreada=Entrada::create($dataEntrada);
             $tickets[]=$entradacreada;
 $contador=$contador+1;
@@ -119,7 +120,7 @@ $contador=$contador+1;
 
        $e= Pdf :: loadHTML ($html )-> setPaper ( ' a4 ' , ' horizontal ' )-> save ( storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf ' ));
         $archivo=storage_path('app/eventos/'.$data['crearEntradaId'].'/'.'fileprint.pdf');
-        return view('tickets',['archivo'=>$archivo,'tickets'=>$tickets,'dataentrada'=>$dataEntrada]);
+        return view('tickets',['archivo'=>$archivo,'tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'data'=>$dataEntrada]);
     }
 
     /**

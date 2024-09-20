@@ -31,6 +31,6 @@ public function getUpdatedAtAttribute($value)
     return Carbon::parse($value)->subHours(3)->format('d/m/Y H:i');
 }
 public function Entradas(){
-    return $this->hasMany(Entrada,'evento_id')
+    return $this->hasMany(Entrada::class,'evento_id');
 }
 }
