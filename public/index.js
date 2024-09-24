@@ -59,8 +59,11 @@ const activarSonido = () => {
   audio.play();
 }
 
+
 //callback cuando termina de leer el codigo QR
 qrcode.callback = (respuesta_lector) => {
+    console.log(respuesta_lector)
+  document.getElementById("messageapi").innerHTML+="<H2>respuesta "+respuesta_lector+"</H2>"
   fetch("http://tickets.estarweb.com.ar/api/verifyticket",{
     headers: {
       'Authorization': 'Bearer ' + '{{ $token }}'
