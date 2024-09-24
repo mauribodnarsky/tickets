@@ -68,7 +68,7 @@ qrcode.callback = (respuesta_lector) => {
         headers: {
           'Authorization': 'Bearer ' + '{{ $token }}'
       },  
-        url: "http://127.0.0.1:8000/api/verifyticket", // Reemplaza con la URL de tu API
+        url: "https://tickets.estarweb.com.ar/api/verifyticket", // Reemplaza con la URL de tu API
           method: "POST", // O POST, PUT, DELETE según tu API
           dataType: "json",
           data:{
