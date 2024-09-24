@@ -1,3 +1,4 @@
+@extends('layouts.app')
 <div class="row justify-content-center mt-5">
     <div class="col-sm-4 shadow p-3">
       <h5 class="text-center">Escanear codigo QR</h5>

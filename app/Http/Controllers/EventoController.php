@@ -136,6 +136,7 @@ class EventoController extends Controller
     
     }else{
         $logourl = '';
+        $path='';
 
     }
          
