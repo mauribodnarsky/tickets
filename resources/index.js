@@ -63,7 +63,7 @@ const activarSonido = () => {
 qrcode.callback = (respuesta_lector) => {
   fetch("https://tickets.estarweb.com.ar/api/verifyticket",{
     headers: {
-      'Authorization': 'Bearer ' + '{{ $token }}'
+      'Authorization': 'XSRF-TOKEN ' + '{{ $token }}'
   },  
       method: "POST", // O POST, PUT, DELETE según tu API
       dataType: "json",

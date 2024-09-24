@@ -61,7 +61,7 @@ const activarSonido = () => {
 
 //callback cuando termina de leer el codigo QR
 qrcode.callback = (respuesta_lector) => {
-  fetch("https://tickets.estarweb.com.ar/api/verifyticket",{
+  fetch("http://tickets.estarweb.com.ar/api/verifyticket",{
     headers: {
       'Authorization': 'Bearer ' + '{{ $token }}'
   },  

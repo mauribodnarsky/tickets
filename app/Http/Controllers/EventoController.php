@@ -12,6 +12,8 @@ use App\Models\Entrada;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 class EventoController extends Controller
 {
     /**
@@ -28,8 +30,18 @@ class EventoController extends Controller
 
     public function lector()
     {
-        
-        return view('auth.lector');
+        $loginUserData = Auth::user();
+        $user = User::where('email',$loginUserData['email'])->first();
+        if(!$user || !Hash::check($loginUserData['password'],$user->password)){
+            return response()->json([
+                'message' => 'Invalid Credentials'
+            ],401);
+        }
+        $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
+ 
+
+        return view('auth.lector',['token' => $token
+    ]);
     }
 
     /**
