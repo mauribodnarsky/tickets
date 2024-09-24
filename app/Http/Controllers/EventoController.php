@@ -48,7 +48,7 @@ class EventoController extends Controller
         }else{
             $message='entrada ya ingresada';
         }
-        
+
         $evento=Entrada::select('select * FROM entradas where id = ?', [$id]);
         return response()->json(["response"=>$evento,"estado"=>$estado,'message'=>$message],200);
     }
@@ -108,7 +108,9 @@ class EventoController extends Controller
     public function creartickets(Request $request)
     {
         $data=$request->all();
+        if($request->file('photo')){
         $file = $request->file('photo');
+        }
         $evento=DB::select('select * from eventos where id = ?', [$data['crearEntradaId']]);
         
         $contador=0;
@@ -116,9 +118,15 @@ class EventoController extends Controller
         Storage::makeDirectory(public_path('eventos/'));
         
         $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
-          $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
-          $logourl = public_path($path);
+        if($request->file('photo')){
+        $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
+        $logourl = public_path($path);
+    
+    }else{
+        $logourl = '';
 
+    }
+         
         $tickets=[];
 
         while($data['cantidad']>$contador){

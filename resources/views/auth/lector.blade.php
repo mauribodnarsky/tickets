@@ -14,8 +14,13 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-12" >
+      <h1 id="messageapi">mensaje </h1>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-4 bg-secondary" id="loading-animation">
-      cargando...
+      Cargando...
     </div>
     <div class="col-4 bg-success" id="success-animation">
         PROCEDA

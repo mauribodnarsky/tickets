@@ -1,4 +1,3 @@
-const { data } = require("autoprefixer");
 
 //crea elemento
 const video = document.createElement("video");
@@ -62,8 +61,7 @@ const activarSonido = () => {
 
 //callback cuando termina de leer el codigo QR
 qrcode.callback = (respuesta_lector) => {
-  if (respuesta_lector) {
-    $(document).ready(function() {
+    console.log("ent"+respuesta_lector)
       $.ajax({
         headers: {
           'Authorization': 'Bearer ' + '{{ $token }}'
@@ -75,12 +73,16 @@ qrcode.callback = (respuesta_lector) => {
             "link_event":respuesta_lector
           
           },
-          beforeSend: function() {
+          next: function(response) {
+            console.log(response)
+            alert(response)
+
               // Mostrar una animación de carga mientras se realiza la petición
               $('#loading-animation').show();
           },
           success: function(response) {
-              // Ocultar la animación de carga
+           
+              document.getElementById("messageapi").innerText="respuesta"+response
               $('#loading-animation').hide();
   
               if (response.status === 'success') {
@@ -100,13 +102,12 @@ qrcode.callback = (respuesta_lector) => {
               $('#error-animation').show();
           }
       });
-  });   
     Swal.fire(respuesta)
     activarSonido();
     //encenderCamara();    
     cerrarCamara();    
 
-  }
+  
 };
 //evento para mostrar la camara sin el boton 
 window.addEventListener('load', (e) => {
