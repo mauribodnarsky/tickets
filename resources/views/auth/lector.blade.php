@@ -2,7 +2,7 @@
     <div class="col-sm-4 shadow p-3">
       <h5 class="text-center">Escanear codigo QR</h5>
       <div class="row text-center">
-        <a id="btn-scan-qr" href="#">
+        <a id="btn-scan-qr" >
           <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" class="img-fluid text-center" width="175">
         <a/>
         <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
