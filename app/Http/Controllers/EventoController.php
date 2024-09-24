@@ -31,12 +31,8 @@ class EventoController extends Controller
     public function lector()
     {
         $loginUserData = Auth::user();
-        $user = User::where('email',$loginUserData['email'])->first();
-        if(!$user || !Hash::check($loginUserData['password'],$user->password)){
-            return response()->json([
-                'message' => 'Invalid Credentials'
-            ],401);
-        }
+
+        $user = User::where('email',$loginUserData->email)->first();
         $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
  
 
