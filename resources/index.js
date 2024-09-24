@@ -61,47 +61,21 @@ const activarSonido = () => {
 
 //callback cuando termina de leer el codigo QR
 qrcode.callback = (respuesta_lector) => {
-    console.log("ent"+respuesta_lector)
-      $.ajax({
-        headers: {
-          'Authorization': 'Bearer ' + '{{ $token }}'
-      },  
-        url: "https://tickets.estarweb.com.ar/api/verifyticket", // Reemplaza con la URL de tu API
-          method: "POST", // O POST, PUT, DELETE según tu API
-          dataType: "json",
-          data:{
-            "link_event":respuesta_lector
-          
-          },
-          next: function(response) {
-            console.log(response)
-            alert(response)
-
-              // Mostrar una animación de carga mientras se realiza la petición
-              $('#loading-animation').show();
-          },
-          success: function(response) {
-           
-              document.getElementById("messageapi").innerText="respuesta"+response
-              $('#loading-animation').hide();
-  
-              if (response.status === 'success') {
-                  // Mostrar animación de éxito
-                  $('#success-animation').show();
-              } else {
-                  // Mostrar animación de error
-                  $('#error-animation').show();
-              }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-              // Ocultar la animación de carga
-              $('#loading-animation').hide();
-              $('#success-animation').hide();
-
-              // Mostrar animación de error en caso de fallo en la petición
-              $('#error-animation').show();
-          }
-      });
+  fetch("https://tickets.estarweb.com.ar/api/verifyticket",{
+    headers: {
+      'Authorization': 'Bearer ' + '{{ $token }}'
+  },  
+      method: "POST", // O POST, PUT, DELETE según tu API
+      dataType: "json",
+      data:{
+        "link_event":respuesta_lector
+      
+      }}).then(response=>{
+        console.log(response)
+        document.getElementById("messageapi").innerText="respuesta"+response
+      })
+      .then(error=>alert("Error"+error))
+   
     Swal.fire(respuesta)
     activarSonido();
     //encenderCamara();    
