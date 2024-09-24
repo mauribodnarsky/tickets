@@ -9,6 +9,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Entrada;
+use Illuminate\Http\Client\Request as ClientRequest;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class EventoController extends Controller
 {
@@ -23,6 +25,7 @@ class EventoController extends Controller
         
         return view('auth.eventos',['eventos'=>$eventos]);
     }
+
     public function lector()
     {
         
@@ -34,9 +37,20 @@ class EventoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function verificarticket(Request $request)
     {
-        //
+        $data=$request->all();
+        $id=$data['link_event'];
+        $evento=Entrada::select('select * FROM entradas where id = ?', [$id]);
+        if($evento[0]['ingreso']==false){
+            $estado=DB::update('update entradas set ingreso = true, hora_ingreso=CURRENT_TIMESTAMP() where id = ?', [$id]);
+            $message='entrada valida!';
+        }else{
+            $message='entrada ya ingresada';
+        }
+        
+        $evento=Entrada::select('select * FROM entradas where id = ?', [$id]);
+        return response()->json(["response"=>$evento,"estado"=>$estado,'message'=>$message],200);
     }
 
     /**
@@ -100,13 +114,12 @@ class EventoController extends Controller
         $contador=0;
         $html='';
         Storage::makeDirectory(public_path('eventos/'));
-    
+        
         $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
-        Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/');
-        Storage::makeDirectory('eventos/'.$data['crearEntradaId'].'/tickets/');
-        $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
-        $tickets=[];
+          $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
+          $logourl = public_path($path);
 
+        $tickets=[];
 
         while($data['cantidad']>$contador){
              $dataEntrada['evento_id']=$data['crearEntradaId'];
@@ -118,7 +131,7 @@ class EventoController extends Controller
 $contador=$contador+1;
 
         }
-        return view('tickets',['tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'data'=>$dataEntrada]);
+        return view('tickets',['tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'evento'=>$evento[0]]);
     }
 
     /**

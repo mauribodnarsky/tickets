@@ -13,6 +13,18 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-4 bg-secondary" id="loading-animation">
+      cargando...
+    </div>
+    <div class="col-4 bg-success" id="success-animation">
+        PROCEDA
+      </div>
+      <div class="col-4 bg-danger" id="error-animation">
+      ERROR      
+      </div>
+    
+  </div>
   <audio id="audioScaner" src="{{asset('public/sonido.mp3')}}"></audio>
 
     <script src="{{asset('public/qrCode.min.js')}}"></script>

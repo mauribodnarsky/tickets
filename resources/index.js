@@ -1,3 +1,5 @@
+const { data } = require("autoprefixer");
+
 //crea elemento
 const video = document.createElement("video");
 
@@ -59,9 +61,46 @@ const activarSonido = () => {
 }
 
 //callback cuando termina de leer el codigo QR
-qrcode.callback = (respuesta) => {
-  if (respuesta) {
-    //console.log(respuesta);
+qrcode.callback = (respuesta_lector) => {
+  if (respuesta_lector) {
+    $(document).ready(function() {
+      $.ajax({
+        headers: {
+          'Authorization': 'Bearer ' + '{{ $token }}'
+      },  
+        url: "http://127.0.0.1:8000/api/verifyticket", // Reemplaza con la URL de tu API
+          method: "POST", // O POST, PUT, DELETE según tu API
+          dataType: "json",
+          data:{
+            "link_event":respuesta_lector
+          
+          },
+          beforeSend: function() {
+              // Mostrar una animación de carga mientras se realiza la petición
+              $('#loading-animation').show();
+          },
+          success: function(response) {
+              // Ocultar la animación de carga
+              $('#loading-animation').hide();
+  
+              if (response.status === 'success') {
+                  // Mostrar animación de éxito
+                  $('#success-animation').show();
+              } else {
+                  // Mostrar animación de error
+                  $('#error-animation').show();
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              // Ocultar la animación de carga
+              $('#loading-animation').hide();
+              $('#success-animation').hide();
+
+              // Mostrar animación de error en caso de fallo en la petición
+              $('#error-animation').show();
+          }
+      });
+  });   
     Swal.fire(respuesta)
     activarSonido();
     //encenderCamara();    
