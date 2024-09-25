@@ -41,8 +41,7 @@ class EventoController extends Controller
     }
     public function escaneadas()
     {
-        $entradas=Entrada::all()->where('ingreso','==',true);
-        
+        $entradas=DB::select('select * from entradas where ingreso = ?', [1]);   
         return response()->json(['entradas'=>$entradas]);
     }
     /**
