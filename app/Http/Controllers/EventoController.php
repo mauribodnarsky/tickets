@@ -49,15 +49,16 @@ class EventoController extends Controller
     {
         $data=$request->all();
         $id=$data['link_event'];
-        $evento=Entrada::select('select * FROM entradas where id = ?', [$id]);
-        if($evento[0]['ingreso']==false){
+        $evento=DB::select('select * FROM entradas where id = ?', [$id]);
+        if($evento[0]->ingreso==false){
             $estado=DB::update('update entradas set ingreso = true, hora_ingreso=CURRENT_TIMESTAMP() where id = ?', [$id]);
-            $message='entrada valida!';
+            $message='EXCELENTE... Entrada válida! Proceda!';
         }else{
-            $message='entrada ya ingresada';
+            $message='UUUUPPPS... entrada ya ingresada o invalida';
+            $estado=false;
         }
 
-        $evento=Entrada::select('select * FROM entradas where id = ?', [$id]);
+        $evento=DB::select('select * FROM entradas where id = ?', [$id]);
         return response()->json(["response"=>$evento,"estado"=>$estado,'message'=>$message],200);
     }
 
