@@ -39,7 +39,12 @@ class EventoController extends Controller
         return view('auth.lector',['token' => $token
     ]);
     }
-
+    public function escaneadas()
+    {
+        $entradas=Entrada::all()->where('ingreso','==',true);
+        
+        return view('auth.eventos',['entradas'=>$entradas]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -50,7 +55,7 @@ class EventoController extends Controller
         $data=$request->all();
         $id=$data['link_event'];
         $evento=DB::select('select * FROM entradas where id = ?', [$id]);
-        if($evento[0]->ingreso==false){
+        if(isset($evento[0]->ingreso) && $evento[0]->ingreso==false){
             $estado=DB::update('update entradas set ingreso = true, hora_ingreso=CURRENT_TIMESTAMP() where id = ?', [$id]);
             $message='EXCELENTE... Entrada válida! Proceda!';
         }else{
