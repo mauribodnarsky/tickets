@@ -43,7 +43,7 @@ class EventoController extends Controller
     {
         $entradas=Entrada::all()->where('ingreso','==',true);
         
-        return view('auth.eventos',['entradas'=>$entradas]);
+        return response()->json(['entradas'=>$entradas]);
     }
     /**
      * Show the form for creating a new resource.
