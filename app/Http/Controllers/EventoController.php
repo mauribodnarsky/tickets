@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Entrada;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 class EventoController extends Controller
@@ -128,7 +128,7 @@ class EventoController extends Controller
             $file = $request->file('photo');
             $filename=$file->getClientOriginalName();
             $path = $file->store('public/eventos/'.$data['crearEntradaId']);
-            $logourl= "storage/"."eventos/".$data['crearEntradaId']."/".basename($path);
+    $logourl = Storage::url($path);
 
     }else{
         $logourl = '';

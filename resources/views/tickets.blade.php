@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-10 offset-1"  id="content">
         @foreach($tickets as $ticket)
-            <div class="row my-2 ticket " >
+            <div class="row my-2 ticket fondo-entrada" style="background-image: url({{$ticket->diseno}}); >
     <div class="col-12">
     <div class="row"><div class="col-4 qr">
         <div class="visible-print text-center">
@@ -20,7 +20,7 @@
     
 </div>
     </div>
-    <div  class="col-8 text-center my-auto fondo-entrada" style="background-image: url({{$ticket->diseno}});">
+    <div  class="col-8 text-center my-auto ">
         <h1 class="d-block fs-1">{{$evento->nombre}}</h1>
         <h2 class="d-block fs-3 text-danger">{{$evento->descripcion}}</h2>
 
@@ -38,7 +38,8 @@
 
 <style>
     .ticket{
-        border: solid 3px gray;
+        border: solid 5px lightgray;
+        margin-bottom: 10px;
     }
     .qr{
         padding: 2em 0em;
