@@ -6,11 +6,7 @@ use App\Models\Evento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Entrada;
-use Illuminate\Http\Client\Request as ClientRequest;
-use Illuminate\Support\Facades\Request as FacadesRequest;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -121,20 +117,19 @@ class EventoController extends Controller
     public function creartickets(Request $request)
     {
         $data=$request->all();
-        if($request->file('photo')){
-        $file = $request->file('photo');
-        }
+     
         $evento=DB::select('select * from eventos where id = ?', [$data['crearEntradaId']]);
-        
+
         $contador=0;
         $html='';
-        Storage::makeDirectory(public_path('eventos/'));
-        
-        $value = "tickets.estarweb.com.ar/".$data['crearEntradaId'].'/event/'.$contador;
+   
         if($request->file('photo')){
-        $path = Storage::put('eventos/'.$data['crearEntradaId'], $file);
-        $logourl = public_path($path);
-    
+
+            $file = $request->file('photo');
+            $filename=$file->getClientOriginalName();
+            $path = $file->store('public/eventos/'.$data['crearEntradaId']);
+            $logourl= "storage/"."eventos/".$data['crearEntradaId']."/".basename($path);
+
     }else{
         $logourl = '';
         $path='';
@@ -147,11 +142,11 @@ class EventoController extends Controller
              $dataEntrada['evento_id']=$data['crearEntradaId'];
             $dataEntrada['type']='digital';
             $dataEntrada['type_ticket']='evento';
-            $dataEntrada['diseno']= $path;
+            $dataEntrada['diseno']=$logourl;
             $entradacreada=Entrada::create($dataEntrada);
             $tickets[]=$entradacreada;
-$contador=$contador+1;
-
+            $contador=$contador+1;
+    
         }
         return view('tickets',['tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'evento'=>$evento[0]]);
     }
