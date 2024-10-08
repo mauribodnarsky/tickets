@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 <div class="container">
+<div class="row justify-content-center">
+  <div class="col-12">
+    <a href="http://lector.estarweb.com.ar/" target="_blank">IR AL LECTOR QR</a>
+  </div>
+</div>
     <div class="row justify-content-center">
         <div class="col-5">
             <div class="card">
@@ -53,19 +58,25 @@
                 <div class="col-7">
                     {{$evento->nombre}}
                 </div>
-                <div class="col-3">
+              <!--  <div class="col-2">
                 <form method="POST" action="{{ route('eventos.delete')}}">
                 @csrf
                     <input type="hidden" value="{{$evento->id}}" name="id">
                     <input type="submit" value="BORRAR" class="btn btn-success p-3">
                 </form>
+                </div>-->
+                <div class="col-5">
+                <div class="row">
+                    <div class="col-6">
+                    <a class="btn btn-primary " href="verevento/{{$evento->id}}">VER EVENTO</a>
+                    </div>
+                    <div class="col-6">
+                    <button class="btn btn-primary " data-bs-target="#crearentradas" data-bs-toggle="modal" onclick="crearEntradas('{{$evento->nombre}}','{{$evento->id}}')">CREAR ENTRADAS</button>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <button class="btn btn-primary p-3" data-bs-target="#crearentradas" data-bs-toggle="modal" onclick="crearEntradas('{{$evento->nombre}}','{{$evento->id}}')">CREAR ENTRADAS</button>
-                </div>
+             </div>
             </div>
 
-            
             @endforeach
         @endif
     </div>

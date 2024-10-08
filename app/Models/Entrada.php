@@ -18,13 +18,13 @@ class Entrada extends Model
     
        public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->subHours(3)->format('d/m/Y H:i');
+        return Carbon::parse($value)->subHours(0)->format('d/m/Y H:i');
     }
     
     // Or for updated_at:
     
     public function getUpdatedAtAttribute($value)
     {
-        return Carbon::parse($value)->subHours(3)->format('d/m/Y H:i');
+        return Carbon::parse($value)->subHours(0)->format('d/m/Y H:i');
     }
 }

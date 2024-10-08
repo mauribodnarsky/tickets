@@ -15,16 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::post('/eventos', [EventoController::class, 'store'])->middleware(['auth'])->name('eventos.store');
 Route::get('/eventos', [EventoController::class, 'index'])->middleware(['auth'])->name('eventos.index');
 Route::get('/lector', [EventoController::class, 'lector'])->middleware(['auth'])->name('eventos.lector');
+Route::get('verevento/{evento}', [EventoController::class, 'verUno'])->middleware(['auth']);
 
 Route::post('/borrar', [EventoController::class, 'delete'])->middleware(['auth'])->name('eventos.delete');
 Route::post('/creartickets', [EventoController::class, 'creartickets'])->middleware(['auth'])->name('eventos.creartickets');
 
 Route::get('/dashboard', function () {
+
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 

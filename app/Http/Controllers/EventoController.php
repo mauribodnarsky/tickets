@@ -19,7 +19,9 @@ class EventoController extends Controller
      */
     public function index()
     {
-        $eventos=Evento::all();
+        $user=Auth::user();
+      
+        $eventos=Evento::all()->where('user_id','==',$user->id);
         
         return view('auth.eventos',['eventos'=>$eventos]);
     }
@@ -62,6 +64,21 @@ class EventoController extends Controller
         return response()->json(["response"=>$evento,"estado"=>$estado,'message'=>$message],200);
     }
 
+
+
+    public function verUno(Request $request,$evento)
+    {
+        $user=Auth::user();
+      
+        $eventoconsulta=DB::select('select * FROM eventos where id = ? and user_id=?', [$evento,$user->id]);
+
+        $evento=$eventoconsulta[0];
+        $entradas=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
+        $ingresados=DB::select('select * FROM entradas where evento_id = ? and hora_ingreso!=NULL', [$evento->id]);        
+        $noingresados=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
+        $noingresados=$noingresados;
+        return view('auth.evento',["evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -163,8 +180,8 @@ class EventoController extends Controller
     }
     public function generateQRCode()
 {
-$value = "estarweb.com.ar";
-QrCode::size(500)
+            $value = "estarweb.com.ar";
+            QrCode::size(500)
             ->format('png')
             ->generate($value, storage_path('app/eventos/1/tickets/qrcode.png'));
     return view('qrCode');

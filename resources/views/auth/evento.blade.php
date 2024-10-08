@@ -1,13 +1,25 @@
 @extends('layouts.app')
-<div class="row">
-    <div class="col-12">
-        <button onclick="generarpdf()">Crear pdf</button>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10 offset-1">
+        <h2 class="text-start">EVENTO {{$evento->nombre}}</h2>
+        <h5>CANTIDAD DE ENTRADAS GENERADAS: {{sizeof($entradas)}}</h5>
+                <h5>CANTIDAD DE ENTRADAS INGRESADAS: {{sizeof($ingresados)}}</h5>
+                <h5>CANTIDAD DE ENTRADAS SIN INGRESAR: {{sizeof($noingresados)}}</h5>
+
+ 
     </div>
 </div>
+</div>
+
+
 <div class="row">
-    <div class="col-10 offset-1"  id="content">
-        @foreach($tickets as $ticket)
-            <div class="row my-2 ticket " style="background-image: url({{$ticket->diseno}});">
+    <div class="col-10 offset-1">
+        @foreach($entradas as $ticket)
+        <div class="row" id="ticket{{$ticket->id}}"  onclick="generarticket('{{$ticket->id}}')" > 
+          <div class="col-12">
+            <div class="row my-2 ticket  "  style="background-image: url({{$ticket->diseno}});">
     <div class="col-12">
     <div class="row"><div class="col-4 qr fondo-entrada">
         <div class="visible-print text-center">
@@ -16,7 +28,7 @@
 
 
 
-{!!  QrCode::size(150)->generate($ticket['id']) !!}
+{!!  QrCode::size(150)->generate($ticket->id) !!}
     
 </div>
     </div>
@@ -27,6 +39,11 @@
         <h4 class="d-block fs-5">{{$evento->fecha}}</h4>
 </div></div>
                 
+    </div>
+
+        
+    </div>
+    
     </div>
 
         
@@ -62,10 +79,13 @@
 
 <script>
 
- function generarpdf(){
-    
-    var element = document.getElementById('content');
-    html2pdf(element);
+ function generarticket(element){
+   var  elementhtml=document.getElementById("ticket"+element)
+   console.log(elementhtml)
+   var opt = {
+  filename:     "{{$evento->nombre}}.pdf",
+};
 
+var entrada=html2pdf(elementhtml,opt);
  }
 </script>
