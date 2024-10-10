@@ -7,20 +7,21 @@
 <div class="row">
     <div class="col-10 offset-1"  id="content">
         @foreach($tickets as $ticket)
-            <div class="row my-2 ticket " style="background-image: url({{$ticket->diseno}});">
+            <div class="row my-2 ticket " style="background-image: url('{{$ticket->diseno}}');">
     <div class="col-12">
-    <div class="row"><div class="col-4 qr fondo-entrada">
+    <div class="row">
+        <div class="col-7 text-center qr fondo-entrada">
         <div class="visible-print text-center">
 
 
 
 
 
-{!!  QrCode::size(150)->generate($ticket['id']) !!}
+{!!  QrCode::size(500)->generate($ticket['id']) !!}
     
 </div>
     </div>
-    <div  class="col-8 text-center my-auto ">
+    <div  class="col-5  text-center my-auto ">
         <h1 class="d-block fs-1">{{$evento->nombre}}</h1>
         <h2 class="d-block fs-3 text-danger">{{$evento->descripcion}}</h2>
 
@@ -69,3 +70,10 @@
 
  }
 </script>
+
+
+<style>
+    .visible-print svg{
+        width: 100% !important;
+    }
+</style>

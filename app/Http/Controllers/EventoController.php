@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Evento;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -53,7 +54,7 @@ class EventoController extends Controller
         $id=$data['link_event'];
         $evento=DB::select('select * FROM entradas where id = ?', [$id]);
         if(isset($evento[0]->ingreso) && $evento[0]->ingreso==false){
-            $estado=DB::update('update entradas set ingreso = true, hora_ingreso=CURRENT_TIMESTAMP() where id = ?', [$id]);
+            $estado=DB::update('update entradas set ingreso = true, hora_ingreso=? where id = ?', [Carbon::now(),$id]);
             $message='EXCELENTE... Entrada válida! Proceda!';
         }else{
             $message='UUUUPPPS... entrada ya ingresada o invalida';
@@ -74,8 +75,8 @@ class EventoController extends Controller
 
         $evento=$eventoconsulta[0];
         $entradas=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
-        $ingresados=DB::select('select * FROM entradas where evento_id = ? and hora_ingreso!=NULL', [$evento->id]);        
-        $noingresados=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
+        $ingresados=DB::select('select * FROM entradas where evento_id = ? and ingreso=1', [$evento->id]);        
+        $noingresados=DB::select('select * FROM entradas where evento_id = ? and ingreso=0', [$evento->id]);        
         $noingresados=$noingresados;
         return view('auth.evento',["evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
     }
@@ -145,7 +146,7 @@ class EventoController extends Controller
             $file = $request->file('photo');
             $filename=$file->getClientOriginalName();
             $path = $file->store('public/eventos/'.$data['crearEntradaId']);
-    $logourl = Storage::url($path);
+            $logourl = 'https://tickets.estarweb.com.ar/'.Storage::url($path);
 
     }else{
         $logourl = '';

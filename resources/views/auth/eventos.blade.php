@@ -7,7 +7,7 @@
   </div>
 </div>
     <div class="row justify-content-center">
-        <div class="col-5">
+        <div class="col-md-5 col-12">
             <div class="card">
                 <div class="card-header">Crear   
  Evento</div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-    <div class="col-7">
+    <div class="col-12 col-md-7">
         @if(isset($eventos))
         <div class="row">
             <div class="col-12">
@@ -55,7 +55,7 @@
         </div>
             @foreach($eventos as $evento)
             <div class="row my-2">
-                <div class="col-7">
+                <div class="col-5 col-md-6">
                     {{$evento->nombre}}
                 </div>
               <!--  <div class="col-2">
@@ -65,7 +65,7 @@
                     <input type="submit" value="BORRAR" class="btn btn-success p-3">
                 </form>
                 </div>-->
-                <div class="col-5">
+                <div class="col-7 col-md-6">
                 <div class="row">
                     <div class="col-6">
                     <a class="btn btn-primary " href="verevento/{{$evento->id}}">VER EVENTO</a>

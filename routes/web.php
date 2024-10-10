@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Evento;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +28,13 @@ Route::post('/borrar', [EventoController::class, 'delete'])->middleware(['auth']
 Route::post('/creartickets', [EventoController::class, 'creartickets'])->middleware(['auth'])->name('eventos.creartickets');
 
 Route::get('/dashboard', function () {
+        $user=Auth::user();
+      
+        $eventos=Evento::all()->where('user_id','==',$user->id);
+        
+        return view('auth.eventos',['eventos'=>$eventos]);
 
-    return view('dashboard');
+    return view('auth.eventos');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(EventoController::class)->group(function () {

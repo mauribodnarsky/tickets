@@ -17,27 +17,29 @@
 <div class="row">
     <div class="col-10 offset-1">
         @foreach($entradas as $ticket)
-        <div class="row" id="ticket{{$ticket->id}}"  onclick="generarticket('{{$ticket->id}}')" > 
+        <div class="row" id="ticket{{$ticket->id}}"   > 
           <div class="col-12">
-            <div class="row my-2 ticket  "  style="background-image: url({{$ticket->diseno}});">
+            <div class="row my-2 ticket  "  >
     <div class="col-12">
-    <div class="row"><div class="col-4 qr fondo-entrada">
+    <div class="row">
+        <div class="col-12 qr  fondo-entrada h-50">
         <div class="visible-print text-center">
 
 
 
 
 
-{!!  QrCode::size(150)->generate($ticket->id) !!}
+{!!  QrCode::generate($ticket->id) !!}
     
 </div>
     </div>
-    <div  class="col-8 text-center my-auto ">
+    <div  class="col-12 text-center tezt-warning my-auto event-info align-items-center " style="background-image: url('{{$ticket->diseno}}');background-size: cover;background-position:center;" >
         <h1 class="d-block fs-1">{{$evento->nombre}}</h1>
         <h2 class="d-block fs-3 text-danger">{{$evento->descripcion}}</h2>
 
         <h4 class="d-block fs-5">{{$evento->fecha}}</h4>
-</div></div>
+    </div>
+    </div>
                 
     </div>
 
@@ -47,6 +49,11 @@
     </div>
 
         
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <button class="w-25 btn btn-primary" onclick="generarticket('{{$ticket->id}}')">Descargar</button>
+        </div>
     </div>
     @endforeach
 </div>
@@ -68,6 +75,14 @@
         background-position: center;
         background-size: cover;
     }
+    .visible-print svg{
+        width:80% !important;
+        height:auto !important;
+    }
+        .event-info{
+        height:50vh !important;
+    }
+
 </style>
 
 <!-- jQuery library -->
@@ -75,17 +90,18 @@
   src="https://code.jquery.com/jquery-3.7.1.js"
   integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
   crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 
  function generarticket(element){
    var  elementhtml=document.getElementById("ticket"+element)
-   console.log(elementhtml)
-   var opt = {
-  filename:     "{{$evento->nombre}}.pdf",
-};
+    var opt = {
+            margin: [5, 10, 0.25, 10],
+              image:        { type: 'pdf', quality: 0.98 },
+              filename:     "{{$evento->nombre}}"+"_ticket"+element+".pdf",
+    };
 
-var entrada=html2pdf(elementhtml,opt);
+html2pdf().set(opt).from(elementhtml).save();
  }
 </script>
