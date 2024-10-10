@@ -65,19 +65,30 @@ class EventoController extends Controller
     }
 
 
+    public function descargarEntradaApi(Request $request)
+{
+    $data=$request->all();
+    $entrada=$data['entrada_id'];
+    $eventoconsulta=Entrada::where('id', intval($entrada))->update(['descargada' => true]);
+    $eventoconsulta=Entrada::where('id', intval($entrada))->get();
 
+  
+    return response()->json(["response"=>$eventoconsulta]);
+}
     public function verUno(Request $request,$evento)
     {
         $user=Auth::user();
       
-        $eventoconsulta=DB::select('select * FROM eventos where id = ? and user_id=?', [$evento,$user->id]);
+        $eventoconsulta=DB::select('select * FROM eventos where id = ? and user_id=? ', [$evento,$user->id]);
 
         $evento=$eventoconsulta[0];
-        $entradas=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
+        $entradas=DB::select('select * FROM entradas where evento_id = ? and descargada=false', [$evento->id]);        
+        $descargadas=DB::select('select * FROM entradas where evento_id = ? and descargada=1', [$evento->id]);        
+
         $ingresados=DB::select('select * FROM entradas where evento_id = ? and hora_ingreso!=NULL', [$evento->id]);        
         $noingresados=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
         $noingresados=$noingresados;
-        return view('auth.evento',["evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
+        return view('auth.evento',["descargadas"=>$descargadas, "evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
     }
     /**
      * Store a newly created resource in storage.

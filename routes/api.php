@@ -24,6 +24,7 @@ Route::post('register',[UserAuthController::class,'register']);
 Route::post('login',[UserAuthController::class,'login']);
 Route::post('logout',[UserAuthController::class,'logout'])
   ->middleware('auth:sanctum');
+  Route::post('/marcardescargada', [EventoController::class, 'descargarEntradaApi'])->middleware(['auth:sanctum']);
 
   Route::get('/escaneadas', [EventoController::class, 'escaneadas'])->middleware(['auth:sanctum']);
 
