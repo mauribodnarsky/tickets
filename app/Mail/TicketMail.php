@@ -8,6 +8,7 @@ use App\Models\Evento;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class TicketMail extends Mailable
 {
@@ -40,11 +41,14 @@ class TicketMail extends Mailable
         // Create QR code
        
       
-       $writer= QrCode::size(500)
-        ->format('png')
-        ->generate($this->ticket->id, storage_path('app/eventos/1/tickets/qrcode.png'));    
+       $writer= // Crear el directorio si no existe
+Storage::makeDirectory('public/eventos/'.$this->evento->nombre.'/tickets', 0755, true);
+
+// Generar y guardar el código QR
+$path = storage_path('app/public/eventos/'.$this->evento->nombre.'/tickets/' . $this->ticket->id . '.png');
+$writer = QrCode::size(500)
+    ->format('png')
+    ->generate($this->ticket->id, $path);
         return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')
-        ->view('emails.ticketenviado',['qr',""])->attachData($writer, 'name.pdf', [
-            'mime' => 'application/pdf',
-        ]);    }
+        ->view('emails.ticketenviado',['qr',$this->ticket->id])->attach($path);    }
 }
