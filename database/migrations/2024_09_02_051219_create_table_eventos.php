@@ -24,7 +24,6 @@ class CreateTableEventos extends Migration
             $table->string('ubicacion')->nullable();
             $table->string('categoria')->nullable();   
             $table->timestamps();
-            $table->time('hora');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       });
     }

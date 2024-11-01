@@ -24,11 +24,9 @@ Route::get('verevento/{evento}', [EventoController::class, 'verUno'])->middlewar
 
 Route::post('/borrar', [EventoController::class, 'delete'])->middleware(['auth'])->name('eventos.delete');
 Route::post('/creartickets', [EventoController::class, 'creartickets'])->middleware(['auth'])->name('eventos.creartickets');
+Route::post('/enviartickets', [EventoController::class, 'enviartickets'])->middleware(['auth'])->name('eventos.enviartickets');
 
-Route::get('/dashboard', function () {
-
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [EventoController::class, 'index'])->middleware(['auth'])->name('eventos.index');
 
 Route::controller(EventoController::class)->group(function () {
     Route::get('/generateqrcode', 'generateQRCode')->middleware(['auth'])->name('generateqrcode');

@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Mail\TicketMail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Evento;
+USE Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Entrada;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 class EventoController extends Controller
 {
@@ -39,7 +43,7 @@ class EventoController extends Controller
     }
     public function escaneadas()
     {
-        $entradas=DB::select('select * from entradas where ingreso = ?', [1]);   
+        $entradas=DB::select('select * from entradas where ingreso = ? ORDER BY hora_ingreso DESC', [1]);   
         return response()->json(['entradas'=>$entradas]);
     }
     /**
@@ -53,7 +57,7 @@ class EventoController extends Controller
         $id=$data['link_event'];
         $evento=DB::select('select * FROM entradas where id = ?', [$id]);
         if(isset($evento[0]->ingreso) && $evento[0]->ingreso==false){
-            $estado=DB::update('update entradas set ingreso = true, hora_ingreso=CURRENT_TIMESTAMP() where id = ?', [$id]);
+            $estado = DB::update('update entradas set ingreso = true, hora_ingreso=? where id = ?', [Carbon::now(), $id]);
             $message='EXCELENTE... Entrada válida! Proceda!';
         }else{
             $message='UUUUPPPS... entrada ya ingresada o invalida';
@@ -82,9 +86,9 @@ class EventoController extends Controller
         $eventoconsulta=DB::select('select * FROM eventos where id = ? and user_id=? ', [$evento,$user->id]);
 
         $evento=$eventoconsulta[0];
-        $entradas=DB::select('select * FROM entradas where evento_id = ? and descargada=false', [$evento->id]);        
-        $descargadas=DB::select('select * FROM entradas where evento_id = ? and descargada=1', [$evento->id]);        
-
+        $entradas=DB::select('select * FROM entradas where evento_id = ? and descargada=false', [$evento->id]);    
+        
+        $descargadas = Entrada::where('descargada', true)->where('evento_id', $evento->id)->get();
         $ingresados=DB::select('select * FROM entradas where evento_id = ? and hora_ingreso!=NULL', [$evento->id]);        
         $noingresados=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
         $noingresados=$noingresados;
@@ -189,12 +193,15 @@ class EventoController extends Controller
     {
         //
     }
-    public function generateQRCode()
-{
-            $value = "estarweb.com.ar";
-            QrCode::size(500)
-            ->format('png')
-            ->generate($value, storage_path('app/eventos/1/tickets/qrcode.png'));
-    return view('qrCode');
+    public function enviartickets(Request $request)
+    {
+        $data=$request->all();
+     
+    $id=$data['id'];
+    $evento = Evento::find($id);
+
+    $ticket = Entrada::find($id);
+    Mail::to($data['email'])->send(new TicketMail($ticket,$evento));
+    
 }
 }

@@ -602,6 +602,7 @@ class ComposerStaticInitbe3a20a4bfb918e32cf0f4e43a54f064
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
+        'App\\Mail\\TicketMail' => __DIR__ . '/../..' . '/app/Mail/TicketMail.php',
         'App\\Models\\Entrada' => __DIR__ . '/../..' . '/app/Models/Entrada.php',
         'App\\Models\\Evento' => __DIR__ . '/../..' . '/app/Models/Evento.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',

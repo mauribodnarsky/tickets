@@ -16,6 +16,7 @@ class AddColumnsEntradas extends Migration
         Schema::table('entradas', function (Blueprint $table) {
  
             $table->boolean('descargada')->nullable()->default(false);
+
       });
     
     }
