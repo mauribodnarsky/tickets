@@ -22,65 +22,51 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+ 
 <div class="row">
-    <div class="col-10 offset-1">
-        <div class="row" id="ticket{{$ticket->id}}"   > 
-          <div class="col-12">
-            <div class="row my-2 ticket  "  >
+    <div class="col-10 offset-1"  id="content">
+        @foreach($tickets as $ticket)
+            <div class="row my-2 ticket " style="background-image: url({{$ticket->diseno}});">
     <div class="col-12">
-    <div class="row"  >
-    <div  class="col-12 text-center  my-auto event-info align-items-center py-1 " style="background-image: url('{{$ticket->diseno}}');background-size: cover;background-position:center;" >
-        
-        <h1 class="d-block fs-1 text-white">{{$evento->nombre}}</h1>
-        <h2 class="d-block fs-3 text-white">{{$evento->descripcion}}</h2>
+    <div class="row"><div class="col-4 qr fondo-entrada">
+        <div class="visible-print text-center">
 
-        <h4 class="d-block fs-5 text-white">{{$evento->fecha}}</h4>
-    </div>
-    <div class="col-12 qr  fondo-entrada  ">
-        <div class="visible-print text-center mt-2  ">
-
-
-<img src="{!!$message->embedData(QrCode::format('png')->generate('Embed me into an e-mail!'), 'QrCode.png', 'image/png')!!}">
-
-
-
-
-    
+{!!  QrCode::size(150)->generate($ticket['id']) !!}
+   
 </div>
-#000000{{$ticket->id}}
     </div>
+    <div  class="col-8 text-center my-auto ">
+        <h1 class="d-block fs-1">{{$evento->nombre}}</h1>
+        <h2 class="d-block fs-3 text-danger">{{$evento->descripcion}}</h2>
 
-    </div>
+        <h4 class="d-block fs-5">{{$evento->fecha}}</h4>
+</div></div>
                 
     </div>
 
         
     </div>
-    
-    </div>
-
-        
-    </div>
-</div>
+    @endforeach
 </div>
 
+<div id="elementH"></div>
+
+</body>
+</html>
 <style>
     .ticket{
         border: solid 5px lightgray;
         margin-bottom: 10px;
     }
-    
+    .qr{
+        padding: 2em 0em;
+
+        border-right: dashed 2px goldenrod;
+    }
     .fondo-entrada{
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
     }
-    .visible-print svg{
-        width:90% !important;
-        height:auto !important;
-    }
-      
-
 </style>
-</body>
-</html>
+

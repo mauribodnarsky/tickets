@@ -24,63 +24,16 @@
 <body>
 <div class="row">
     <div class="col-10 offset-1">
-        <div class="row" id="ticket{{$ticket->id}}"   > 
-          <div class="col-12">
-            <div class="row my-2 ticket  "  >
-    <div class="col-12">
-    <div class="row"  >
-    <div  class="col-12 text-center  my-auto event-info align-items-center py-1 " style="background-image: url('{{$ticket->diseno}}');background-size: cover;background-position:center;" >
-        
-        <h1 class="d-block fs-1 text-white">{{$evento->nombre}}</h1>
+
+        <h1 class="d-block fs-1 text-white">Buenas! te asignaron como vendedor para el evento : {{$evento->nombre}}</h1>
         <h2 class="d-block fs-3 text-white">{{$evento->descripcion}}</h2>
 
         <h4 class="d-block fs-5 text-white">{{$evento->fecha}}</h4>
+        <H5>Ingresa a la plataforma para comenzar a enviar los tickets que vayas vendiendo.</H5>
     </div>
-    <div class="col-12 qr  fondo-entrada  ">
-        <div class="visible-print text-center mt-2  ">
-
-
-<img src="{!!$message->embedData(QrCode::format('png')->generate('Embed me into an e-mail!'), 'QrCode.png', 'image/png')!!}">
-
-
-
-
-    
-</div>
-#000000{{$ticket->id}}
-    </div>
-
-    </div>
-                
-    </div>
-
-        
     </div>
     
-    </div>
 
-        
-    </div>
-</div>
-</div>
-
-<style>
-    .ticket{
-        border: solid 5px lightgray;
-        margin-bottom: 10px;
-    }
-    
-    .fondo-entrada{
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
-    .visible-print svg{
-        width:90% !important;
-        height:auto !important;
-    }
-      
-
-</style>
+>
 </body>
 </html>

@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
@@ -35,7 +37,13 @@
                                 name="password"
                                 required autocomplete="new-password" />
             </div>
-
+   <!-- Confirm Password -->
+   <div class="mt-4">
+   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+  <input type="checkbox" class="btn-check" id="btncheck1" name="rol" autocomplete="off">
+  <label class="btn btn-outline-primary" for="btncheck1">Registrarme como vendedor</label>
+    </div> 
+           </div>
             <!-- Confirm Password -->
             <div class="mt-4">
                 <x-label for="password_confirmation" :value="__('Confirm Password')" />

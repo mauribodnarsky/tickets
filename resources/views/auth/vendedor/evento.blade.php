@@ -1,20 +1,30 @@
 @extends('layouts.app')
 
-<div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center h-25" style="background-image: url({{$evento->diseno}});background-repeat:no-repeat;background-size:contain;background-attachment:fixed;">
         <div class="col-10 offset-1">
-        <h2 class="text-start">EVENTO {{$evento->nombre}}</h2>
-        <h5>CANTIDAD DE ENTRADAS SIN DESCARGAR: {{sizeof($entradas)}}</h5>
-        <h5>CANTIDAD DE ENTRADAS DESCARGADAS: {{sizeof($descargadas)}}</h5>
-
-        <h5>CANTIDAD DE ENTRADAS INGRESADAS: {{sizeof($ingresados)}}</h5>
-                <h5>CANTIDAD DE ENTRADAS SIN INGRESAR: {{sizeof($noingresados)}}</h5>
-
- 
+        <h2 class="text-start retro-team">{{$evento->nombre}}</h2>
+      
     </div>
 </div>
 </div>
-
+<div class="row mt-2">
+    <div class="col-6 col-md-4 my-2 caja-reportes text-center ">
+    <h5 class="retro-team my-2">TICKETS DIGITALES VENDIDOS</h5>
+    <H6 class="all-ages">{{sizeof($entradas)}}</H6>
+    </div>
+    <div class="col-6 col-md-4 my-2 caja-reportes text-center">
+    <h5 class="retro-team my-2">TICKETS DIGITALES VENDIDOS</h5>
+    <H6 class="all-ages">{{sizeof($entradas)}}</H6>
+    </div>
+    <div class="col-6 col-md-4 my-2 caja-reportes text-center">
+    <h5 class="retro-team my-2">TICKETS DIGITALES VENDIDOS</h5>
+    <H6 class="all-ages">{{sizeof($entradas)}}</H6>
+    </div>
+    <div class="col-6 col-md-4 my-2 caja-reportes text-center">
+    <h5 class="retro-team my-2">TICKETS DIGITALES VENDIDOS</h5>
+    <H6 class="all-ages">{{sizeof($entradas)}}</H6>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-10 offset-1">

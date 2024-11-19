@@ -15,13 +15,16 @@ class CreateTableEntradas extends Migration
     {
         Schema::create('entradas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users'); //es el poseedor de la tarjeta en caso de ser asignada a un vendedor
+            $table->string('email_vendida')->nullable(); //el email al que se envia la entrada
+
             $table->unsignedBigInteger('evento_id');
             $table->foreign('evento_id')->references('id')->on('eventos')->onDelete('cascade');
             $table->string('diseno');
             $table->string('type');
             $table->boolean('ingreso')->default(false);
             $table->dateTime('hora_ingreso')->nullable()->default(null);
-
             $table->string('type_ticket');
             $table->timestamps();
         });

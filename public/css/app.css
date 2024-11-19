@@ -11964,3 +11964,53 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+@font-face {
+    font-family: 'Retro Team';
+    src: url('../fonts/retro_team/Retro\ Team.otf');
+}
+.retro-team{
+  font-size: 3rem;
+    font-family: 'Retro Team';
+    letter-spacing: 1.5px;
+
+}
+.btn-warning{
+  font-family: 'Retro Team';
+  font-size: xx-large;
+}
+@font-face {
+  font-family: 'ALL AGES';
+  src: url('../fonts/all_ages/AllAgesDEMO.ttf');
+}
+.all-ages{
+font-size: 3rem;
+font-family: 'ALL AGES';
+
+}
+
+@font-face {
+  font-family: 'GARET BOOK';
+  src: url('../fonts/all_ages/GARET-BOOK.ttf');
+}
+.garet-book{
+font-family: 'GARET BOOK';
+
+}
+
+.caja-reportes{
+  border: #055160 solid 2px;
+  padding: 2em;
+  background-color: white;
+  border-radius: 5px;
+}
+.fila-eventos{
+  background-color: white;
+  padding: 1em 0em;
+  border-top: 2px solid darkgoldenrod;
+}
+.fila-par{
+background-color: wheat;
+}
+.fila-impar{
+  background-color: lightgray;
+}

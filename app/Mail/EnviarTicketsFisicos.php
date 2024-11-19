@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 
-class TicketMail extends Mailable
+class EnviarTicketsFisicos extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,13 +19,13 @@ class TicketMail extends Mailable
      *
      * @return void
      */
-    public $ticket;
+    public $tickets;
     public $evento;
     public $qr;
 
-    public function __construct(Entrada $ticket,Evento $evento)
+    public function __construct(Array $tickets,Evento $evento)
     {
-        $this->ticket = $ticket;
+        $this->tickets = $tickets;
         $this->evento = $evento;
 
     }
@@ -44,11 +44,9 @@ class TicketMail extends Mailable
 Storage::makeDirectory('public/eventos/'.$this->evento->nombre.'/tickets', 0755, true);
 
 // Generar y guardar el código QR
-
-$plaintext = $this->ticket->id;
-$encrypt_method = "AES-256-CBC";	
-	$secret_key = 'lamejorticketeradetodas';
+$secret_key = 'lamejorticketeradetodas';
 $secret_iv = 'lamejorticketeradetodasiv';
+$encrypt_method = "AES-256-CBC";	
 
 
 // hash
@@ -57,19 +55,17 @@ $key = hash('sha256', $secret_key);
 // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
 $iv = substr(hash('sha256', $secret_iv), 0, 16);
 
-    $encryptedString = openssl_encrypt($plaintext, $encrypt_method, $key, 0, $iv);
-    $encryptedString = str_replace('/', '-',base64_encode($encryptedString));
+
+foreach($this->tickets as $entrada){
 
 
+    $encryptedString = openssl_encrypt($entrada->id, $encrypt_method, $key, 0, $iv);
+    $encripted_id = str_replace('/', '-',base64_encode($encryptedString));
+    $entrada->id=$encripted_id; 
+}	;
 
-
-
-$path = storage_path('app/public/eventos/'.$this->evento->nombre.'/tickets/' . $this->ticket->id . '.png');
-$writer = QrCode::size(2000)
-    ->format('png')
-    ->generate($encryptedString, $path);
-
-    
         return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')
-        ->view('emails.ticketenviado',['qr',$this->ticket->id])->attach($path);    }
+        ->view('emails.ticketsfisicos',['qr',$this->tickets]);   
+    
+    }
 }

@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+    font-family: 'Retro Team';
+    src: url('../fonts/retro_team/Retro\ Team.otf');
+}
+.retro-team{
+    font-family: 'Retro Team';
+
+}

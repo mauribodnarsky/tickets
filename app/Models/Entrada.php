@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Entrada extends Model
 {
-    protected $fillable=['evento_id','diseno','type','type_ticket','ingreso'];
+    protected $fillable=['user_id','email_vendida','evento_id','diseno','type','ingreso','type_ticket'];
     protected $table = 'entradas'; // Reemplaza 'tus_entradas' con el nombre real de tu tabla
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i',

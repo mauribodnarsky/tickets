@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -33,7 +33,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        if(isset($request->rol) && $request->rol=="on"){
+            $rol='vendedor';
+        }else{
+            $rol='organizador';
+        }      
+          $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -43,12 +48,15 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'rol' => $rol,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
-
+        if($rol=="vendedor"){
+            DB::update('update vendedores_entradas set user_id =?  where email = ?', [$user->id,$user->email]);
+        }
         return redirect(RouteServiceProvider::HOME);
     }
 }

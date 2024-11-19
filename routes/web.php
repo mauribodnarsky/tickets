@@ -25,6 +25,7 @@ Route::get('verevento/{evento}', [EventoController::class, 'verUno'])->middlewar
 Route::post('/borrar', [EventoController::class, 'delete'])->middleware(['auth'])->name('eventos.delete');
 Route::post('/creartickets', [EventoController::class, 'creartickets'])->middleware(['auth'])->name('eventos.creartickets');
 Route::post('/enviartickets', [EventoController::class, 'enviartickets'])->middleware(['auth'])->name('eventos.enviartickets');
+Route::post('/asignarvendedor', [EventoController::class, 'asignarvendedor'])->middleware(['auth'])->name('eventos.asignarvendedor');
 
 Route::get('/dashboard', [EventoController::class, 'index'])->middleware(['auth'])->name('eventos.index');
 

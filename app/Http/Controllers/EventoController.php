@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AsignarVendedor;
+use App\Mail\EnviarTicketsFisicos;
 use App\Mail\TicketMail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Evento;
@@ -12,6 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Entrada;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\VendedorEntrada;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 class EventoController extends Controller
@@ -24,10 +27,21 @@ class EventoController extends Controller
     public function index()
     {
         $user=Auth::user();
-      
+        if($user->rol=='organizador'){
         $eventos=Evento::all()->where('user_id','==',$user->id);
         
-        return view('auth.eventos',['eventos'=>$eventos]);
+        return view('auth.organizador.eventos',['eventos'=>$eventos]);
+        }
+        if($user->rol=='vendedor'){
+            $eventos=[];
+            $eventosDelegados=VendedorEntrada::all()->where('email','==',$user->email);
+            foreach($eventosDelegados as $eventodelegado){
+                $eventos=Evento::all()->where('id','==',$eventodelegado->evento_id);
+                
+            }
+        
+        return view('auth.vendedor.eventos',['eventos'=>$eventos]);
+        }
     }
 
     public function lector()
@@ -55,6 +69,19 @@ class EventoController extends Controller
     {
         $data=$request->all();
         $id=$data['link_event'];
+        $encrypt_method = "AES-256-CBC";
+		$secret_key = 'lamejorticketeradetodas';
+		$secret_iv = 'lamejorticketeradetodasiv';
+	
+		// hash
+		$key = hash('sha256', $secret_key);
+		
+		// iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+		$iv = substr(hash('sha256', $secret_iv), 0, 16);
+	
+		$id = openssl_decrypt(base64_decode(str_replace('/', '-',$id)), $encrypt_method, $key, 0, $iv);
+		
+			
         $evento=DB::select('select * FROM entradas where id = ?', [$id]);
         if(isset($evento[0]->ingreso) && $evento[0]->ingreso==false){
             $estado = DB::update('update entradas set ingreso = true, hora_ingreso=? where id = ?', [Carbon::now(), $id]);
@@ -79,20 +106,35 @@ class EventoController extends Controller
   
     return response()->json(["response"=>$eventoconsulta]);
 }
-    public function verUno(Request $request,$evento)
+    public function verUno($evento)
     {
         $user=Auth::user();
-      
+;
+      if($user->rol=='organizador'){
         $eventoconsulta=DB::select('select * FROM eventos where id = ? and user_id=? ', [$evento,$user->id]);
 
         $evento=$eventoconsulta[0];
-        $entradas=DB::select('select * FROM entradas where evento_id = ? and descargada=false', [$evento->id]);    
-        
-        $descargadas = Entrada::where('descargada', true)->where('evento_id', $evento->id)->get();
+        $entradas=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);    
+        $vendedores = VendedorEntrada::where('evento_id', $evento->id)->get();
+    
+        $ticketdigitalesvendidos = Entrada::where('email_vendida','!=', 'NULL')->where('type', "digital")->where('evento_id', $evento->id)->get();
+        $ticketdigitalesdisponibles = Entrada::whereNull('email_vendida')->where('type', 'digital')->where('evento_id', $evento->id)->get();
+            
+        $ticketfisicosvendidos = Entrada::where('email_vendida','!=', 'NULL')->where('type', "fisico")->where('evento_id', $evento->id)->get();
+        $ticketfisicosdisponibles = Entrada::whereNull('email_vendida')->where('type', "fisico")->where('evento_id', $evento->id)->get();
+    
         $ingresados=DB::select('select * FROM entradas where evento_id = ? and hora_ingreso!=NULL', [$evento->id]);        
-        $noingresados=DB::select('select * FROM entradas where evento_id = ?', [$evento->id]);        
-        $noingresados=$noingresados;
-        return view('auth.evento',["descargadas"=>$descargadas, "evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
+        $noingresados=DB::select('select * FROM entradas where hora_ingreso=NULL and evento_id = ?', [$evento->id]);        
+
+        return view('auth.organizador.evento',["vendedores"=>$vendedores,"ticketdigitalesvendidos"=>$ticketdigitalesvendidos,"ticketfisicosvendidos"=>$ticketfisicosvendidos,"ticketfisicosdisponibles"=>$ticketfisicosdisponibles,"ticketdigitalesdisponibles"=>$ticketdigitalesdisponibles, "evento"=>$evento,"entradas"=>$entradas,"ingresados"=>$ingresados,"noingresados"=>$noingresados]);
+      }
+      if($user->rol=='vendedor'){
+        $eventoconsulta=DB::select('select * FROM eventos where id = ?   ', [$evento]);
+
+        $evento=$eventoconsulta[0];
+        $entradas=DB::select('select * FROM entradas where evento_id = ?', [$user->id]);    
+        return view('auth.vendedor.evento',[ "evento"=>$evento,"entradas"=>$entradas]);
+      }
     }
     /**
      * Store a newly created resource in storage.
@@ -102,11 +144,22 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->file('photo')){
 
+            $file = $request->file('photo');
+            $filename=$file->getClientOriginalName();
+            $path = $file->store('public/eventos/');
+    $logourl = Storage::url($path);
+
+    }else{
+        $logourl = '';
+        $path='';
+
+    }
         $data=$request->all();
         $data['user_id']=Auth::user()->id;
+        $data['diseno']=$logourl;
         $event=Evento::create($data);
-        $eventos=Evento::all();
         return redirect('eventos');
     }
     public function delete(Request $request)
@@ -117,27 +170,7 @@ class EventoController extends Controller
         DB::delete('delete from eventos where id = ?', [$data['id']]);
         return redirect('eventos');
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Evento  $evento
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Evento $evento)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Evento  $evento
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Evento $evento)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -150,9 +183,10 @@ class EventoController extends Controller
     {
         $data=$request->all();
      
-        $evento=DB::select('select * from eventos where id = ?', [$data['crearEntradaId']]);
+        $evento=Evento::find([$data['crearEntradaId']]);
+        $contadorticketdigitales=0;
 
-        $contador=0;
+        $contadorticketfisicos=0;
         $html='';
    
         if($request->file('photo')){
@@ -168,19 +202,34 @@ class EventoController extends Controller
 
     }
          
-        $tickets=[];
+        $ticketsfisicos=[];
+        $ticketsdigitales=[];
 
-        while($data['cantidad']>$contador){
+        while($data['cantidad_fisico']>$contadorticketfisicos){
              $dataEntrada['evento_id']=$data['crearEntradaId'];
-            $dataEntrada['type']='digital';
-            $dataEntrada['type_ticket']='evento';
+            $dataEntrada['type']='fisico';
+            $dataEntrada['type_ticket']='general';
             $dataEntrada['diseno']=$logourl;
             $entradacreada=Entrada::create($dataEntrada);
-            $tickets[]=$entradacreada;
-            $contador=$contador+1;
+            $ticketsfisicos[]=$entradacreada;
+            $contadorticketfisicos=$contadorticketfisicos+1;
     
         }
-        return view('tickets',['tickets'=>$tickets,'dataEntrada'=>$dataEntrada,'evento'=>$evento[0]]);
+        while($data['cantidad_digital']>$contadorticketdigitales){
+            $dataEntrada['evento_id']=$data['crearEntradaId'];
+           $dataEntrada['type']='digital';
+           $dataEntrada['type_ticket']='general';
+           $dataEntrada['diseno']=$logourl;
+           $entradacreada=Entrada::create($dataEntrada);
+           $ticketsdigitales[]=$entradacreada;
+           $contadorticketdigitales=$contadorticketdigitales+1;
+       }
+       $user=Auth::user();
+       
+       Mail::to($user->email)->send(new EnviarTicketsFisicos($ticketsfisicos,$evento[0]));
+
+       redirect('https://tickets.estarweb.com.ar/verevento/'.$evento[0]->id);
+
     }
 
     /**
@@ -197,11 +246,39 @@ class EventoController extends Controller
     {
         $data=$request->all();
      
-    $id=$data['id'];
+    $id=$data['evento_id'];
     $evento = Evento::find($id);
+    $ticketdigitalesvendidos = Entrada::whereNull('email_vendida')->where('type', $data['type'])->where('evento_id', $evento->id)->get();
+    $ticket=$ticketdigitalesvendidos[0];
+    $ticket->email_vendida=$data['email'];
+    $ticket->save();
+    
+    $secretKey = "entradalalalalalsfofk";
+    $ticket->id =  str_replace('/', '-',openssl_encrypt($ticket->id, 'AES-256-CBC', $secretKey));
 
-    $ticket = Entrada::find($id);
     Mail::to($data['email'])->send(new TicketMail($ticket,$evento));
     
+}
+
+
+public function asignarvendedor(Request $request)
+{
+    $data=$request->all();
+$evento_id=$data['asignarVendedorId'];
+
+$email=$data['email'];
+$limite_venta=$data['cantidad'];
+$evento = Evento::find($evento_id);
+$existe_usuario=DB::select('select * from users where email = ? AND rol="vendedor"', [$email]);
+if(sizeof($existe_usuario)>0){
+    DB::insert('insert into vendedores_entradas values  (NULL,?,?,0,?,?,CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP()) ',[$existe_usuario[0]->id,$evento_id,$email,$limite_venta]);
+}
+if(sizeof($existe_usuario)==0){
+    DB::insert('insert into vendedores_entradas  values (NULL, NULL,?,0,?,?,CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP())',[$evento_id,$email,$limite_venta]);
+}
+redirect('https://tickets.estarweb.com.ar/verevento/'.$evento_id);
+
+//Mail::to($data['email'])->send(new AsignarVendedor($evento));
+
 }
 }
