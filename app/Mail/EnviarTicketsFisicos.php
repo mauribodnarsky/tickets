@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Mail;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Entrada;
 use App\Models\Evento;
@@ -63,9 +63,10 @@ foreach($this->tickets as $entrada){
     $encripted_id = str_replace('/', '-',base64_encode($encryptedString));
     $entrada->id=$encripted_id; 
 }	;
+$pdf = Pdf::loadView('emails.ticketsfisicos',['qr',$this->tickets]);
 
-        return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')
-        ->view('emails.ticketsfisicos',['qr',$this->tickets]);   
+return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')
+->attach($pdf);      
     
     }
 }
