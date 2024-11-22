@@ -63,10 +63,13 @@ foreach($this->tickets as $entrada){
     $encripted_id = str_replace('/', '-',base64_encode($encryptedString));
     $entrada->id=$encripted_id; 
 }	;
-$pdf = Pdf::loadView('emails.ticketsfisicos',['qr',$this->tickets]);
+$path = storage_path('app/public/eventos/'.$this->evento->nombre.'/ticketsfisico/');
 
-return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')
-->attach($pdf);      
+$pdf = Pdf::loadView('emails.ticketsfisicos',['tickets'=>$this->tickets,'evento'=>$this->evento]);
+
+$pdf->save($path);
+return $this->from('tickets@estarweb.com.ar', 'ESTARWEB TICKETS')->view('emails.ticketsfisicos',['tickets',$this->tickets,'evento'=>$this->evento])
+->attach($path);      
     
     }
 }
